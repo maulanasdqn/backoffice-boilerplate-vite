@@ -1,69 +1,10 @@
 "use client";
-import type { FC, ReactElement } from "react";
-import { Flex, Menu, Typography, Layout } from "antd";
-import { MenuProps } from "antd";
-import {
-  ApartmentOutlined,
-  BarcodeOutlined,
-  BookOutlined,
-  DashboardFilled,
-  FormOutlined,
-  SettingFilled,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Link } from "@tanstack/react-router";
+import { Suspense, type FC, type ReactElement } from "react";
+import { sidebarItems } from "@/entities/constants/sidebar-constant";
+import { lazily } from "react-lazily";
+import { Layout } from "antd";
 
-const sidebarItems: MenuProps["items"] = [
-  {
-    key: "dashboard",
-    label: <Link href="/">Dashboard</Link>,
-    icon: <DashboardFilled />,
-  },
-  {
-    key: "user",
-    label: "Users",
-    icon: <UserOutlined />,
-    children: [
-      {
-        key: "list-user",
-        label: <Link href="/user">User</Link>,
-        icon: <UserOutlined />,
-      },
-      {
-        key: "list-role",
-        label: <Link href="/role">Role</Link>,
-        icon: <SettingFilled />,
-      },
-    ],
-  },
-  {
-    key: "products",
-    label: "Products",
-    icon: <BarcodeOutlined />,
-    children: [
-      {
-        key: "product",
-        label: <Link href="/product">Product</Link>,
-        icon: <BarcodeOutlined />,
-      },
-      {
-        key: "product-category",
-        label: <Link href="/product-category">Product Category</Link>,
-        icon: <ApartmentOutlined />,
-      },
-      {
-        key: "ingridient",
-        label: <Link href="/ingridient">Ingridient</Link>,
-        icon: <BookOutlined />,
-      },
-      {
-        key: "recipe",
-        label: <Link href="/recipe">Recipe</Link>,
-        icon: <FormOutlined />,
-      },
-    ],
-  },
-];
+const { Flex, Menu, Typography } = lazily(() => import("antd"));
 
 export const Sidebar: FC = (): ReactElement => {
   const { Sider } = Layout;
@@ -79,11 +20,26 @@ export const Sidebar: FC = (): ReactElement => {
           Serasa Erat Backoffice
         </Typography.Text>
       </Flex>
-      <Menu
-        mode="inline"
-        style={{ height: "100%", borderRight: 0 }}
-        items={sidebarItems}
-      />
+      <Suspense
+        fallback={
+          <div
+            style={{
+              height: "100vh",
+              backgroundColor: "white",
+              borderRight: 0,
+              padding: "49px",
+            }}
+          >
+            Loading...
+          </div>
+        }
+      >
+        <Menu
+          mode="inline"
+          style={{ height: "100%", borderRight: 0 }}
+          items={sidebarItems}
+        />
+      </Suspense>
     </Sider>
   );
 };

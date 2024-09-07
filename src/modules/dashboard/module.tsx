@@ -1,14 +1,13 @@
 import { FC, ReactElement } from "react";
 import { useGetDashboard } from "./hook";
+import { useErrorBoundary } from "react-error-boundary";
 
 export const DashboardModule: FC = (): ReactElement => {
   const { data, error, isError, isLoading } = useGetDashboard();
-
-  console.log("Error on module", error);
-  console.log("Data on module", data);
+  const { showBoundary } = useErrorBoundary();
 
   if (isError) {
-    return <div>Error: {error.message}</div>;
+    showBoundary(error);
   }
 
   return <div>Dashboard Module {isLoading ? "Loading..." : data?.name}</div>;

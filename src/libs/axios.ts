@@ -1,4 +1,4 @@
-import { TMetaError } from "@/entities/type";
+import { TMetaError } from "@/entities/types/meta-type";
 import axios, { AxiosRequestConfig } from "axios";
 
 const config: AxiosRequestConfig = {
